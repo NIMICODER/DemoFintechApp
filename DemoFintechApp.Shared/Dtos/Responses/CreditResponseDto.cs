@@ -7,4 +7,12 @@
 		public decimal Balance { get; set; }
 	}
 
+	public class CreditAccountResponseDto
+	{
+		public Guid AccountId { get; set; }
+		public decimal Balance { get; set; }
+		public decimal AmountCredited { get; set; }
+	}
+
+
 }

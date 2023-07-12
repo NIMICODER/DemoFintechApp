@@ -24,58 +24,10 @@ namespace DemoFintechApp.Services.Implementations
 			_accountRepo = _unitOfWork.GetRepository<Account>();
         }
 
-
-        public async Task<ServiceResponse<CreditResponseDto>> CreditAccountAsync(string userId, CreditAccountRequestDto request)
-		{
-			try
-			{
-				
-
-				var account = await _accountRepo.GetSingleByAsync(a => a.UserId.ToString() == userId);
-				if (account == null)
-					return new ServiceResponse<CreditResponseDto>
-					{
-						Message = "Account not found",
-						StatusCode = HttpStatusCode.NotFound
-					};
-
-				account.Balance += request.Amount;
-				await _accountRepo.UpdateAsync(account);
-				await _unitOfWork.SaveChangesAsync();
-
-				var creditResponseDto = new CreditResponseDto
-				{
-					AccountId = account.Id,
-					Amount = request.Amount,
-					Balance = account.Balance
-				};
-
-				return new ServiceResponse<CreditResponseDto>
-				{
-					Message = "Payment Successful",
-					StatusCode = HttpStatusCode.OK,
-					Data = creditResponseDto,
-				};
-
-			}
-			catch (Exception)
-			{
-				return new ServiceResponse<CreditResponseDto>
-				{
-					Message = "An error occurred",
-					StatusCode = HttpStatusCode.InternalServerError
-				};
-				throw;
-			}
-		}
-
 		public async Task<ServiceResponse<DebitResponseDto>> DebitAccountAsync(string userId, DebitAccountRequestDto request)
 		{
-			try
-			{
-				//var userId = _contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);	
 
-				var account = await _accountRepo.GetSingleByAsync(a => a.UserId.ToString() == userId);
+				var account = await _accountRepo.GetSingleByAsync(a => a.UserId == userId);
 
 				if (account == null)
 					return new ServiceResponse<DebitResponseDto>
@@ -106,19 +58,7 @@ namespace DemoFintechApp.Services.Implementations
 					StatusCode = HttpStatusCode.OK,
 					Data = debitResponse
 				};
-
-
-			}
-			catch (Exception ex)
-			{
-				return new ServiceResponse<DebitResponseDto>	
-				{
-					Message = "An error occrred",
-					StatusCode = HttpStatusCode.InternalServerError
-					
-				};
 			
-			}
 		}
 
 		public async Task<ServiceResponse<AccountDto>> GetAccountBalanceAsync(GetAccountBalanceRequestDto request)
@@ -129,6 +69,7 @@ namespace DemoFintechApp.Services.Implementations
 			{
 				var response = new AccountDto
 				{
+					AccountId = account.UserId,
 					AccountNumber = account.AccountNumber,
 					Balance = account.Balance,
 				};
@@ -149,10 +90,41 @@ namespace DemoFintechApp.Services.Implementations
 
 		}
 
+		public async Task<ServiceResponse<CreditAccountResponseDto>> CreditAccountAsync(string userId, CreditAccountRequestDto request)
+		{
+			var account = await _accountRepo.GetSingleByAsync(a => a.UserId == userId);
+			if (account == null)
+			{
+				return new ServiceResponse<CreditAccountResponseDto>
+				{
+					StatusCode = HttpStatusCode.NotFound,
+					Message = "Account not found"
+				};
+			}
+
+			account.Balance += request.Amount;
+
+
+			await _accountRepo.UpdateAsync(account);
+			await _unitOfWork.SaveChangesAsync();
+
+			var response = new CreditAccountResponseDto
+			{
+				AccountId = account.Id,
+				Balance = account.Balance,
+				AmountCredited = account.Balance,
+			};
+			return new ServiceResponse<CreditAccountResponseDto>
+			{
+				StatusCode = HttpStatusCode.OK,
+				Data = response
+			};
+		}
+
 		public async Task<ServiceResponse<TransferResponseDto>> TransferFundsAsync(TransferFundsRequestDto request)
 		{
-			var sourceAccount = await _accountRepo.GetSingleByAsync(a => a.AccountNumber == request.SourceAccountNumber);
-			var destinationAccount = await _accountRepo.GetSingleByAsync(a => a.AccountNumber == request.DestinationAccountNumber);
+			var sourceAccount = await _accountRepo.GetSingleByAsync(a => a.AccountNumber == request.SenderAccountNumber);
+			var destinationAccount = await _accountRepo.GetSingleByAsync(a => a.AccountNumber == request.RecieverAccountNumber);
 
 			
 			if (sourceAccount == null || destinationAccount == null)
@@ -182,12 +154,11 @@ namespace DemoFintechApp.Services.Implementations
 
 			var response = new TransferResponseDto
 			{
-				SenderName = sourceAccount.User.FirstName,
-				ReceiverName = destinationAccount.User.FirstName,
 				Amount = request.Amount,
 			};
 			return new ServiceResponse<TransferResponseDto>
 			{
+				Message = "Transfer Successful",
 				StatusCode = HttpStatusCode.OK,
 				Data = response
 			};

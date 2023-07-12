@@ -28,8 +28,6 @@ namespace DemoFintechApp.Data.Context
 				.HasMaxLength(50) // Set the maximum length for the account number
 				.IsRequired();   // Make the account number property required
 
-			// Other configurations...
-
 			base.OnModelCreating(modelBuilder);
 		}
 
