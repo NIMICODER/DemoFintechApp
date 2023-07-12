@@ -19,9 +19,6 @@ namespace DemoFintechApp.Models.Entities
 		[ForeignKey(nameof(UserId))]
 		public ApplicationUser User { get; set; }
 
-		/*public string CardId { get; set; }
-
-		[ForeignKey(nameof(CardId))]*/
 		public Card Card { get; set; }
 	}
 
