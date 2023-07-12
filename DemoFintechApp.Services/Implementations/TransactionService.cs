@@ -16,15 +16,12 @@ namespace DemoFintechApp.Services.Implementations
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IRepository<ApplicationUser> _userRepo;
 		private readonly IRepository<Account> _accountRepo;
-		
 
         public TransactionService(IUnitOfWork unitOfWork)
         {
 			_unitOfWork = unitOfWork;
-			//_contextAccessor = contextAccessor;
 			_userRepo = _unitOfWork.GetRepository<ApplicationUser>();
 			_accountRepo = _unitOfWork.GetRepository<Account>();
-            
         }
 
 

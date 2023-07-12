@@ -101,15 +101,6 @@ namespace DemoFintechApp.Services.Implementations
 			}
 			await _userManager.AddToRoleAsync(newuser, userRole);
 
-			
-			//await _accountRepo.AddAsync(account);
-			//await _unitOfWork.SaveChangesAsync();
-
-			//var accountDto = new AccountDto
-			//{
-			//	AccountNumber = account.AccountNumber,
-			//	Balance = account.Balance
-			//};
 			return new ServiceResponse<AccountDto>
 			{
 				Message = "Acount Created Succefully",
