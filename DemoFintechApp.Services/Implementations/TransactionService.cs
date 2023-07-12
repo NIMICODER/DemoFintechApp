@@ -63,7 +63,6 @@ namespace DemoFintechApp.Services.Implementations
 
 		public async Task<ServiceResponse<AccountDto>> GetAccountBalanceAsync(GetAccountBalanceRequestDto request)
 		{
-			//string userId = _contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 			Account account = await _accountRepo.GetSingleByAsync(a => a.AccountNumber == request.AccountNumber);
 			if (account != null)
 			{
