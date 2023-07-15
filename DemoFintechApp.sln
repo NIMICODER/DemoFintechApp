@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoFintechApp.Shared", "De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoFintechApp.Logging", "DemoFintechApp.Logging\DemoFintechApp.Logging.csproj", "{EF1DFBD7-B565-440A-9BFA-29132F2F4795}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoFintechApp.UI", "DemoFintechApp.UI\DemoFintechApp.UI.csproj", "{6590969B-5CD7-4A2E-AD06-5953F8E438AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoFintechApp.UI", "DemoFintechApp.UI\DemoFintechApp.UI.csproj", "{6590969B-5CD7-4A2E-AD06-5953F8E438AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
