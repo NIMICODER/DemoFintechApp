@@ -24,6 +24,7 @@ namespace DemoFintechApp.API.Extensions
 			services.AddTransient<IUnitOfWork, UnitOfWork<FintechDbContext>>();
 			services.AddScoped<IAccountService, AccountService>();
 			services.AddScoped<ITransactionService, TransactionService>();
+			services.AddTransient<IFileService, FileService>();	
 
 		}
 
